@@ -9,7 +9,8 @@ namespace Taskplay
     static class Program
     {
         static bool _isMusicPlaying = false;    // Bool to keep in check if the user is playing music
-        static bool _isLightMode = true;
+        static bool _isLightMode = false;
+        static bool _hideSkipControls = false;
 
         /// <summary>
         /// The main entry point for the application.
@@ -21,42 +22,54 @@ namespace Taskplay
             Application.SetCompatibleTextRenderingDefault(false);
 
             _isLightMode = Properties.Settings.Default.LightMode;
+            _hideSkipControls = Properties.Settings.Default.HideSkipControls;
 
-            //Create system tray icons
-            NotifyIcon previousIcon = new NotifyIcon();
-            NotifyIcon playIcon = new NotifyIcon();
-            NotifyIcon nextIcon = new NotifyIcon();
             //Create the context menu and its items
             ContextMenu contextMenu = new ContextMenu();
             MenuItem contextItemSettings = new MenuItem();
+            MenuItem contextItemAbout = new MenuItem();
             MenuItem contextItemExit = new MenuItem();
 
             //Setup the context menu items
             contextItemSettings.Text = "&Settings";
+            contextItemAbout.Text = "&About";
             contextItemExit.Text = "&Exit";
             contextItemSettings.Click += new EventHandler(contextMenuSettings_Click);
+            contextItemAbout.Click += new EventHandler(contextMenuAbout_Click);
             contextItemExit.Click += new EventHandler(contextMenuExit_Click);
+
             //Add the context menu items to the context menu
             contextMenu.MenuItems.Add(contextItemSettings);
+            contextMenu.MenuItems.Add(contextItemAbout);
             contextMenu.MenuItems.Add(contextItemExit);
-            //Setup nextIcon
-            nextIcon.Icon = _isLightMode ? Properties.Resources.Next_B : Properties.Resources.Next_W;
-            nextIcon.Text = "Next";
-            nextIcon.Visible = true;
-            nextIcon.MouseClick += new MouseEventHandler(nextIcon_MouseClick);
-            nextIcon.ContextMenu = contextMenu;
+
+            //Create system tray icons
+            if (!_hideSkipControls)
+            {
+                NotifyIcon previousIcon = new NotifyIcon();
+                NotifyIcon nextIcon = new NotifyIcon();
+
+                //Setup nextIcon
+                nextIcon.Icon = _isLightMode ? Properties.Resources.Next_B : Properties.Resources.Next_W;
+                nextIcon.Text = "Next";
+                nextIcon.Visible = true;
+                nextIcon.MouseClick += new MouseEventHandler(nextIcon_MouseClick);
+                nextIcon.ContextMenu = contextMenu;
+
+                //Setup previousIcon
+                previousIcon.Icon = _isLightMode ? Properties.Resources.Back_B : Properties.Resources.Back_W;
+                previousIcon.Text = "Previous";
+                previousIcon.Visible = true;
+                previousIcon.MouseClick += new MouseEventHandler(previousIcon_MouseClick);
+                previousIcon.ContextMenu = contextMenu;
+            }
+            NotifyIcon playIcon = new NotifyIcon();
             //Setup playIcon
             playIcon.Icon = _isLightMode ? Properties.Resources.Play_B : Properties.Resources.Play_W;
             playIcon.Text = "Play / Pause";
             playIcon.Visible = true;
             playIcon.MouseClick += new MouseEventHandler(playIcon_MouseClick);
             playIcon.ContextMenu = contextMenu;
-            //Setup previousIcon
-            previousIcon.Icon = _isLightMode ? Properties.Resources.Back_B : Properties.Resources.Back_W;
-            previousIcon.Text = "Previous";
-            previousIcon.Visible = true;
-            previousIcon.MouseClick += new MouseEventHandler(previousIcon_MouseClick);
-            previousIcon.ContextMenu = contextMenu;
 
             //Launch
             Application.Run();
@@ -133,17 +146,70 @@ namespace Taskplay
             //Show Settings form
             new SettingsForm().ShowDialog();
         }
+        private static void contextMenuAbout_Click(object sender, System.EventArgs e)
+        {
+            //Show About form
+            new AboutForm().ShowDialog();
+        }
 
         private static void contextMenuExit_Click(object sender, System.EventArgs e)
         {
             //Exit the app
             Application.Exit();
-        } 
+        }
         #endregion
+
+
+
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern void keybd_event(byte virtualKey, byte scanCode, uint flags, IntPtr extraInfo);
     }
+
+
+
+
+
+    //class HotKey
+    //{
+    //    // DLL libraries used to manage hotkeys
+    //    [DllImport("user32.dll")]
+    //    public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
+    //    [DllImport("user32.dll")]
+    //    public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+
+    //    const int MYACTION_HOTKEY_ID = 1;
+
+    //    RegisterHotKey(this.Handle, MYACTION_HOTKEY_ID, 6, (int) Keys.F12);
+
+    //    void RegisterHotkeys(Program pg)
+    //    {
+    //        // Modifier keys codes: Alt = 1, Ctrl = 2, Shift = 4, Win = 8
+    //        // Compute the addition of each combination of the keys you want to be pressed
+    //        // ALT+CTRL = 1 + 2 = 3 , CTRL+SHIFT = 2 + 4 = 6...
+            
+    //        RegisterHotKey(this.Handle, MYACTION_HOTKEY_ID, 6, (int)Keys.F12);
+
+    //    }
+
+
+
+
+    //    protected override void WndProc(ref Message m)
+    //    {
+    //        if (m.Msg == 0x0312 && m.WParam.ToInt32() == MYACTION_HOTKEY_ID)
+    //        {
+    //            // My hotkey has been typed
+
+    //            // Do what you want here
+    //            // ...
+    //        }
+    //        base.WndProc(ref m);
+    //    }
+    //}
+
+
 
 
     /// <summary>

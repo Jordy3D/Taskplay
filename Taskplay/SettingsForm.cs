@@ -25,25 +25,17 @@ namespace Taskplay
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            labelVersion.Text = String.Format("Version {0}", Application.ProductVersion);
             checkBoxAutorun.Checked = (autorun.GetValue("Taskplay") != null);
             checkBoxLight.Checked = Properties.Settings.Default.LightMode;
+            checkBoxHideSkipControls.Checked = Properties.Settings.Default.HideSkipControls;
 
-            //ApplyTheme();
+            ApplyTheme();
         }
 
         void ApplyTheme()
         {
             this.BackColor = ColorTranslator.FromHtml(_isLightMode ? "#f0f0f0" : "#1f1f1f");
             this.ForeColor = ColorTranslator.FromHtml(_isLightMode ? "#000" : "#fff");
-
-            tabControl.ForeColor = ColorTranslator.FromHtml(!_isLightMode ? "#000" : "#fff");
-
-            foreach (TabPage tab in tabControl.Controls)
-            {
-                tab.BackColor = ColorTranslator.FromHtml(_isLightMode ? "#e1e1e1" : "#2e2e2e");
-                tab.ForeColor = ColorTranslator.FromHtml(_isLightMode ? "#000" : "#fff");
-            }
 
             foreach (Button but in flowLayoutPanel1.Controls)
             {
@@ -60,25 +52,14 @@ namespace Taskplay
             else
                 autorun.DeleteValue("Taskplay", false);
 
-            Properties.Settings.Default.LightMode = checkBoxLight.Checked; 
-            
+            Properties.Settings.Default.LightMode = checkBoxLight.Checked;
+            Properties.Settings.Default.HideSkipControls = checkBoxHideSkipControls.Checked;
+
             Properties.Settings.Default.Save();
 
             if (needToRestart)
                 Application.Restart();
         }
-
-        #region GitHub
-        private void linkLabelGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/evilpro/Taskplay");
-        }
-
-        private void linkLabelGitHubBane_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/Jordy3D/");
-        }
-        #endregion
 
         #region Buttons
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -95,15 +76,16 @@ namespace Taskplay
 
 
 
-
-
-
-        #region Me not being used to Visual Studio Forms
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxLight_CheckedChanged(object sender, EventArgs e)
         {
-            bool needToRestart = checkBoxLight.Checked != Properties.Settings.Default.LightMode;
+            needToRestart = checkBoxLight.Checked != Properties.Settings.Default.LightMode;
             restartLabel.Visible = needToRestart;
         }
-        #endregion
+
+        private void checkBoxHideSkipControls_CheckedChanged(object sender, EventArgs e)
+        {
+            needToRestart = checkBoxHideSkipControls.Checked != Properties.Settings.Default.HideSkipControls;
+            restartLabel.Visible = needToRestart;
+        }
     }
 }
