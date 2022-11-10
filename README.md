@@ -10,8 +10,8 @@ It is currently targeting .NET Framework 2.0 so it should be compatible with mos
 
 ## Todo (eventually)
 - Scroll over buttons to change volume
-- Theme-supported Settings
-- Options for showing/hiding icons
+- ~Theme-supported Settings~
+- ~Options for showing/hiding icons~
 
 ## Download
 To download Taskplay, please go to the Releases tab of this repository.
