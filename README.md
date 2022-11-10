@@ -10,6 +10,7 @@ It is currently targeting .NET Framework 2.0 so it should be compatible with mos
 
 ## Todo (eventually)
 - Scroll over buttons to change volume
+- Media play state detection
 - ~Theme-supported Settings~
 - ~Options for showing/hiding icons~
 
