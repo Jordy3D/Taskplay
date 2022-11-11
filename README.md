@@ -8,6 +8,9 @@ Taskplay is written in C#
 
 It is currently targeting .NET Framework 2.0 so it should be compatible with most Windows versions. 
 
+## Notes
+The program currently always starts with the Play/Pause icon on the "Click to Play" state. If your media is already playing when you run the program, it may not function as you expect.
+
 ## Todo (eventually)
 - Scroll over buttons to change volume (currently on Middle-Click actions)
 - Media play state detection
