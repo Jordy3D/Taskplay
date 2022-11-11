@@ -9,7 +9,7 @@ Taskplay is written in C#
 It is currently targeting .NET Framework 2.0 so it should be compatible with most Windows versions. 
 
 ## Todo (eventually)
-- Scroll over buttons to change volume
+- Scroll over buttons to change volume (currently on Middle-Click actions)
 - Media play state detection
 - ~Theme-supported Settings~
 - ~Options for showing/hiding icons~
