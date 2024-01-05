@@ -10,8 +10,11 @@ It is currently targeting .NET Framework 2.0 so it should be compatible with mos
 
 ## Notes
 The program currently always starts with the Play/Pause icon on the "Click to Play" state. If your media is already playing when you run the program, it may not function as you expect.
+### >>> I will not fix this. <<<  
+I don't know how to hook into the Windows playing state information.  
+Even if I did, if you have two media sources open at once, one paused and one not, and you hit the Play/Pause icon, it will toggle between the two (as will all media control things, to my knowledge)
 
-## Todo (eventually)
+## Nice-to-haves
 - Scroll over buttons to change volume (currently on Middle-Click actions)
 - Media play state detection
 - ~Theme-supported Settings~
